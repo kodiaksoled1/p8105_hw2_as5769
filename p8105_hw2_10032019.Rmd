@@ -35,3 +35,22 @@ mr_trash_wheel = read_excel("./data/TrashWheelCollectionTotals.xlsx", sheet = "M
     
 mr_trash_wheel
 ```
+
+## _Precipitation Data_
+
+### First, we can read (`read_excel`) and clean (`janitor::clean_names()`) the preciptation data for the two datasheets that contains 2017 and 2018 data. Again, we can omit the rows without the precipitation data by specifying the `range` of rows and columns to include. Lastly, we can add a variable year to each data set with the `mutate` function. 
+```{r}
+precip_data_2018 = 
+  read_excel("./data/TrashWheelCollectionTotals.xlsx", sheet = "2018 Precipitation", range = "A2:B14") %>%
+  janitor::clean_names() %>%
+  mutate(year = 2018)
+
+precip_data_2018
+  
+precip_data_2017 = 
+  read_excel("./data/TrashWheelCollectionTotals.xlsx", sheet = "2017 Precipitation", range = "A2:B14") %>%
+  janitor::clean_names() %>%
+  mutate(year = 2017)
+ 
+precip_data_2017
+``` 
