@@ -181,3 +181,26 @@ pop_baby_names =
 
 pop_baby_names
 ```
+
+### Then, we can create a reader-friendly table that displays the popularity of the name Olivia from 2011-2016. To do this, we can perform the same cleaning as above, but we will also need to:
+* `filter` for the name Olivia
+* reorganize the variable order using `select` then `arrange`
+* `pivot_wider` the dataframe so that we can produce a reader-friendly table of the popularity of the name Olivia by ethnicity across time
+* use `kable` from the `knitr` package to create a reader-friendly table with a title and `kable_stlying` from the `kableExtra` package to format the table
+
+```{r message = FALSE}
+library(kableExtra)
+olivia = 
+  pop_baby_names %>%
+  filter(name == "olivia") %>%
+  select(year, rank, ethnicity) %>%
+  arrange(year, rank) %>%
+  pivot_wider(
+    names_from = "year",
+    values_from = "rank"
+    ) %>%
+  knitr::kable(caption = "Popularity of the Name 'Olivia' by Ethnicity from 2011-2016") %>%
+  kable_styling(bootstrap_options = c("striped", "condensed", font_size = 12))
+
+olivia
+```
