@@ -132,3 +132,15 @@ unemployment =
 
 unemployment
 ```
+
+### Now we are ready to combine the three datasets. We can first merge the pols-month and snp datasets with the `left_join` function and specifying the merge by the shared catagories of "month" and "year". Then, we can merge this new dataset with the third dataset unemployment in the same fashion: 
+```{r}
+pol_snp_data = 
+  left_join(pols_month, snp, by = c("month", "year"))
+
+pol_snp_unemployment_data = 
+  left_join(pol_snp_data, unemployment, by = c("month", "year")) %>%
+  select(month, year, president, unemployment_rate, snp_close, everything())
+
+pol_snp_unemployment_data
+```
