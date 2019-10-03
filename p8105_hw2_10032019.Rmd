@@ -6,3 +6,4 @@ output: github_document
 always_allow_html: yes
 ---
 
+_Note to TAs: you may need to_ `install.packages(kableExtra)` _to run my code for problem #3._
