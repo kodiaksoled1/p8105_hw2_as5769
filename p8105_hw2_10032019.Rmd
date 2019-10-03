@@ -234,3 +234,18 @@ ethan =
 
 ethan
 ```
+
+### To produce a scatterplot of male, white non-hispanic children born in 2016, we need to first `filter` the dataset to screen for "male" gender, "2016" year, and "white non hispanic" ethnicity:
+
+```{r message = FALSE}
+library(ggridges)
+male_wt_2016 = 
+  pop_baby_names %>%
+  filter(
+    gender == "male", 
+    year == "2016",
+    ethnicity == "white non hispanic"
+    )
+
+male_wt_2016
+```
