@@ -7,3 +7,31 @@ always_allow_html: yes
 ---
 
 _Note to TAs: you may need to_ `install.packages(kableExtra)` _to run my code for problem #3._
+
+# *Problem #1*
+
+## _Mr. Trash Wheel_
+
+### First, we can load the `readxl` package to import the Excel file data and we can load the `tidyverse` package for some of the datacleaning we will need to perform: 
+```{r}
+library(readxl)
+library(tidyverse)
+```
+
+### Now we can read (`read_excel`) and clean the dataset by: 
+* Specifying the sheet in the Excel file we want with `sheets`
+* Omitting non-data entries by specifying the columns and rows we want to include with the `range` function
+* Cleaning up the names of the variables with the `janitor::clean_names()` function
+* Renaming the variables (`rename`) to have simplier names
+* Omitting the rows that do not include dumpster-specific data by using `drop_na`
+
+### Finally we can round the number of sports balls to the nearest integer and convert the result to an integer variable using `as.integer`. 
+```{r}
+mr_trash_wheel = read_excel("./data/TrashWheelCollectionTotals.xlsx", sheet = "Mr. Trash Wheel", range = "A2:N406") %>%
+  janitor::clean_names() %>%
+  rename(weight = weight_tons, volume = volume_cubic_yards) %>%
+  drop_na(dumpster) %>%
+  mutate(sports_balls = as.integer(sports_balls, 0))
+    
+mr_trash_wheel
+```
