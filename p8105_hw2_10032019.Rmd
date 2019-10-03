@@ -204,3 +204,14 @@ olivia =
 
 olivia
 ```
+
+### The most popular male child's name can be identified by filtering (`filter`) the "pop_baby_names" dateset by gender ("male"), and arranging (`arrange`) the datset by rank to see the name that is most popular. This name was Ethan. 
+
+```{r}
+male_names_by_rank =
+  pop_baby_names %>%
+  group_by(year) %>% 
+  filter(gender == "male", rank == "1")
+
+male_names_by_rank
+```
