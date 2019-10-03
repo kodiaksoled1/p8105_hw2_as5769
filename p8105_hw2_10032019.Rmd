@@ -215,3 +215,22 @@ male_names_by_rank =
 
 male_names_by_rank
 ```
+
+### Then, the same procedure can be repeated from the example above in Olivia to produce a simar table of the popularity of the name Ethan by ethnicity across time: 
+
+```{r message = FALSE}
+ethan =
+  pop_baby_names %>%
+  filter(name == "ethan") %>%
+  select(year, rank, ethnicity) %>%
+  arrange(year, rank) %>%
+  pivot_wider(
+    names_from = "year",
+    values_from = "rank"
+    ) %>%
+  knitr::kable(caption = "Popularity of the Name 'Ethan' by Ethnicity from 2011-2016") %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "condensed", font_size = 12))
+
+
+ethan
+```
