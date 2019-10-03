@@ -152,3 +152,32 @@ pol_snp_unemployment_data
 * The *snp dataset* contained `r nrow(snp)*ncol(snp)` cells (`r nrow(snp)` observations and `r ncol(snp)` varaibles) about the average annual return rate of the S&P 500 from 1950-2015. 
 * The *unemployment dataset* contained `r nrow(unemployment)*ncol(unemployment)` cells (`r nrow(unemployment)` observations and `r ncol(unemployment)` variables) about the umployment rate by month from 1948-2015.
 * The *combined dataset* now contains data from 1947 to 2015 on the variables: month, year, president, unemployment rate, the closing rate for the snp, and the govenor, senator, house of representatives of the democratic and republican parties. It is contains `r nrow(pol_snp_unemployment_data)` observations and `r ncol(pol_snp_unemployment_data)` variables for a total of `r nrow(pol_snp_unemployment_data)*ncol(pol_snp_unemployment_data)` cells. 
+
+# *Problem #3*
+
+## _NYC Open_
+
+### First, we need to load (`read_csv`) the dataset pop_baby_names and tidy it. This includes:
+* Cleaning the variable names (`janitor::clean_names()`)
+* Making the varaible names simple with `rename`
+* Changing all the case structure of string variables to lower case (`str_to_lower`)
+* Making the string variables under ethnicity similar (e.g., making "asian and paci" and "asian and pacific islander" have the same name through the `replace` function)
+* Deduplicating the dataset (`distinct`)
+
+```{r message = FALSE}
+pop_baby_names =
+  read_csv("./data/Popular_Baby_Names.csv") %>%
+  janitor::clean_names() %>%
+  rename(year = year_of_birth, name = childs_first_name) %>%
+  mutate(
+    gender = str_to_lower(gender),
+    ethnicity = str_to_lower(ethnicity), 
+    name = str_to_lower(name),
+    ethnicity = replace(ethnicity, ethnicity == "asian and paci", "asian and pacific islander"), 
+    ethnicity = replace(ethnicity, ethnicity == "black non hisp", "black non hispanic"), 
+    ethnicity = replace(ethnicity, ethnicity == "white non hisp", "white non hispanic")
+  ) %>%
+  distinct()
+
+pop_baby_names
+```
