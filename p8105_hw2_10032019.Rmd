@@ -249,3 +249,22 @@ male_wt_2016 =
 
 male_wt_2016
 ```
+
+### Now we can create a scatterplot using `ggplot` of this new subset of the data that shows the number of children with a name against the rank in popularity of that name:
+
+```{r}
+male_names = 
+  male_wt_2016 %>%
+  ggplot(aes(x = rank, y = count)) +
+  geom_point(aes(color = "pink", alpha = .5)) + 
+  labs(
+    title = "Number of Male, White Non-Hispanic Children \nBorn in 2016 by Popularity",
+    x = "Rank in Popularity",
+    y = "Number of Children with a Name", 
+    caption = "Data from the Popular Baby Names dataset"
+    )  + 
+  theme_classic() +
+  theme(legend.position = "none")
+  
+male_names
+```
