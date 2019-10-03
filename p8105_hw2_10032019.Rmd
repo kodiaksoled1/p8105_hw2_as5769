@@ -54,3 +54,14 @@ precip_data_2017 =
  
 precip_data_2017
 ``` 
+
+### Finally, we can combine the two datasets with the `bind_rows` function to stack the two datasets ontop of one another to create a tidy dataset. We can also convert the month variable from a numeric (1-12) to a character variable (january-december) so that the month names appear using `month.name`:
+```{r message = FALSE}
+precip_data = 
+  bind_rows(precip_data_2017, precip_data_2018) %>%
+  mutate(
+    month = month.name[month],
+    month = str_to_lower(month))
+
+precip_data
+```
