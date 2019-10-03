@@ -3,5 +3,6 @@ title: "p8105_hw2_10032019"
 author: "Kodiak Soled"
 date: "10/3/2019"
 output: github_document
+always_allow_html: yes
 ---
 
