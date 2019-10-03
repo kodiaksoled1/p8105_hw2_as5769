@@ -79,3 +79,56 @@ precip_data
 * The combined precipition dataset contains the total preciptation per month for the years 2017 and 2018. 
 * It contains `r nrow(precip_data)` observations and `r ncol(precip_data)` variables (month, year, and total precipitation) for a total of `r nrow(precip_data)*ncol(precip_data)` cells.
 * In 2018 the total precipitation was `r sum(pull(precip_data %>% filter(year == "2018"), total))`. 
+
+# *Problem 2* 
+
+## _FiveThiryEight_
+
+### First, we can import (`read_csv`) and clean (`janitor::clean_names()`) the three datasets: pols-month.csv, unemployment.csv, and snp.csv. Then, for the pols-month and snp datasets, we can use the `separate` function to change the "date" variable into three variables ("year", "month", and "day") (_note: this isn't necessary for the unemployment dataset as it was already seperated by date_). Then we can make specific modifications to each dataset in order to merge them: 
+
+* For the pols-month data, we can replace the month number with the abbreviated month name (to match the unemployment dataset that contains abbreviated month names) with `month.abb` under the `mutate` function, after specifying the month as an integer (`as.integer`). We also can create a new variable "president" under `mutate` with the `if_else` function and remove the "prez_gap", "prez_day", and "day" variables with `select` to clean up the dataset. 
+
+* We can then clean the snp data to look similar to the pols-month data by using many of the same functions as above (e.g., deleting the "day" variable with `select`, changing month as a number to a name with `month.abb` under the `mutate` function, etc.)  
+
+* The unemployment data needed to be reorganized from a "wide" to "long" format to match the first two datasets. The `pivot_longer` function allows us to do this. We also needed to make"year" into a character vector which we can do with `as.character` under the `mutate` function. 
+
+### The cleaned datasets look like the following: 
+```{r message = FALSE}
+pols_month =
+  read_csv("./data/pols-month.csv") %>%
+  janitor::clean_names() %>%
+  separate(mon, into = c("year", "month", "day")) %>%
+  mutate(
+    month = month.abb[as.integer(month)],
+    month = str_to_lower(month),
+    president = if_else(prez_gop == 1, "gop", "dem")) %>%
+  select(-prez_gop, -prez_dem, -day)
+
+pols_month
+
+snp = 
+  read_csv("./data/snp.csv") %>%
+  janitor::clean_names() %>%
+  separate(date, into = c("month", "day", "year")) %>%
+  select(-day) %>%
+  mutate(
+    month = month.abb[as.integer(month)],
+    month = str_to_lower(month)) %>%
+  select(year, month, close) %>%
+  arrange(year, month) %>%
+  rename(snp_close = close)
+
+snp
+
+unemployment = 
+  read_csv("./data/unemployment.csv") %>%
+  janitor::clean_names() %>%
+  pivot_longer(
+    jan:dec,
+    names_to = "month",
+    values_to = "count") %>%
+  mutate(year = as.character(year)) %>%
+  rename(unemployment_rate = count)
+
+unemployment
+```
